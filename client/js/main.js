@@ -1,74 +1,97 @@
 jQuery(document).ready(function ($) {
 
-  var fileDeaths = './src/deaths.json';
+  fetch("http://localhost:3000/data/confirmed").then(data => {
+    console.log("main.js -> 4: data", data)
+    data.json().then(res => {
+      console.log("main.js -> 5: red", res)
+      let list = []
+      res.forEach(d => {
+        if (d["3/11/20"] >= 1) {
+          let color = "rgb(75, 22, 22)"
+          if(d["3/11/20"] <= 1) color = "rgb(225, 22, 22)"
+          else if (d["3/11/20"] < 5) color = "rgb(175, 22, 22)"
+          else if (d["3/11/20"] < 10) color = "rgb(125, 22, 22)"
+          let res = {
+            "title": d["Country/Region"],
+            "latitude": d["Lat"],
+            "longitude": d["Long"],
+            "color": color
+          }
+          list.push(res)
+        
+        }
+      })
 
-  console.log(fileDeaths);
+      am4core.ready(function () {
 
-  am4core.ready(function() {
+        // Themes begin
+        // Themes end
 
-  // Themes begin
-  // Themes end
+        // Create map instance
+        var chart = am4core.create("chartdiv", am4maps.MapChart);
 
-  // Create map instance
-  var chart = am4core.create("chartdiv", am4maps.MapChart);
+        // Set map definition
+        chart.geodata = am4geodata_worldLow;
 
-  // Set map definition
-  chart.geodata = am4geodata_worldLow;
+        // Set projection
+        chart.projection = new am4maps.projections.Miller();
 
-  // Set projection
-  chart.projection = new am4maps.projections.Miller();
+        // Create map polygon series
+        var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
 
-  // Create map polygon series
-  var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+        // Exclude Antartica
+        polygonSeries.exclude = ["AQ"];
 
-  // Exclude Antartica
-  polygonSeries.exclude = ["AQ"];
+        // Make map load polygon (like country names) data from GeoJSON
+        polygonSeries.useGeodata = true;
 
-  // Make map load polygon (like country names) data from GeoJSON
-  polygonSeries.useGeodata = true;
-
-  // Configure series
-  var polygonTemplate = polygonSeries.mapPolygons.template;
-  polygonTemplate.tooltipText = "{name}";
-  polygonTemplate.polygon.fillOpacity = 0.6;
-
-
-  // Create hover state and set alternative fill color
-  var hs = polygonTemplate.states.create("hover");
-  hs.properties.fill = chart.colors.getIndex(0);
-
-  // Add image series
-  var imageSeries = chart.series.push(new am4maps.MapImageSeries());
-  imageSeries.mapImages.template.propertyFields.longitude = "longitude";
-  imageSeries.mapImages.template.propertyFields.latitude = "latitude";
-  imageSeries.mapImages.template.tooltipText = "{title}";
-  imageSeries.mapImages.template.propertyFields.url = "url";
-
-  var circle = imageSeries.mapImages.template.createChild(am4core.Circle);
-  circle.radius = 3;
-  circle.propertyFields.fill = "color";
-
-  var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
-  circle2.radius = 3;
-  circle2.propertyFields.fill = "color";
+        // Configure series
+        var polygonTemplate = polygonSeries.mapPolygons.template;
+        polygonTemplate.tooltipText = "{name}";
+        polygonTemplate.polygon.fillOpacity = 0.6;
 
 
-  circle2.events.on("inited", function(event){
-    animateBullet(event.target);
+        // Create hover state and set alternative fill color
+        var hs = polygonTemplate.states.create("hover");
+        hs.properties.fill = chart.colors.getIndex(0);
+
+        // Add image series
+        var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+        imageSeries.mapImages.template.propertyFields.longitude = "longitude";
+        imageSeries.mapImages.template.propertyFields.latitude = "latitude";
+        imageSeries.mapImages.template.tooltipText = "{title}";
+        imageSeries.mapImages.template.propertyFields.url = "url";
+
+        var circle = imageSeries.mapImages.template.createChild(am4core.Circle);
+        circle.radius = 3;
+        circle.propertyFields.fill = "color";
+
+        var circle2 = imageSeries.mapImages.template.createChild(am4core.Circle);
+        circle2.radius = 3;
+        circle2.propertyFields.fill = "color";
+        imageSeries.data = list
+
+        circle2.events.on("inited", function (event) {
+          animateBullet(event.target);
+        })
+
+
+        function animateBullet(circle) {
+          var animation = circle.animate([{ property: "scale", from: 1, to: 5 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
+          animation.events.on("animationended", function (event) {
+            animateBullet(event.target.object);
+          })
+        }
+
+      });
+
+
+
+
+    }).catch(e => console.log("%cmain.js -> 6 ERROR: e", 'background: #FF0000; color:#FFFFFF', e))
   })
 
 
-  function animateBullet(circle) {
-      var animation = circle.animate([{ property: "scale", from: 1, to: 5 }, { property: "opacity", from: 1, to: 0 }], 1000, am4core.ease.circleOut);
-      animation.events.on("animationended", function(event){
-        animateBullet(event.target.object);
-      })
-  }
-
-  var colorSet = new am4core.ColorSet();
-
-
-  });
 
   // Header fixed and Back to top button
   $(window).scroll(function () {
