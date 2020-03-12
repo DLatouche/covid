@@ -1,5 +1,9 @@
 jQuery(document).ready(function ($) {
 
+  var fileDeaths = './src/deaths.json';
+
+  console.log(fileDeaths);
+
   am4core.ready(function() {
 
   // Themes begin
@@ -62,6 +66,8 @@ jQuery(document).ready(function ($) {
   }
 
   var colorSet = new am4core.ColorSet();
+
+
   });
 
   // Header fixed and Back to top button
