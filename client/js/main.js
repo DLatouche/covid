@@ -2,9 +2,20 @@ import API from "./API.js"
 (async () => {
 
   try {
-    let jsonFile = await API.getJson("deaths")
+
+    let totalConfirmed = 0;
+    let totalDeaths = 0;
+
+    let jsonFileConfirmed = await API.getJson("confirmed")
+    jsonFileConfirmed.forEach(data => {
+      totalConfirmed += data["3/11/20"]
+    })
+    console.log("confirmed: "+totalConfirmed);
+    $('#confirmes').text(totalConfirmed)
+
+    let jsonFileDeaths = await API.getJson("deaths")
     let list = []
-    jsonFile.forEach(data => {
+    jsonFileDeaths.forEach(data => {
       if (data["3/11/20"] >= 1) {
         let color = "rgb(75, 22, 22)"
         if (data["3/11/20"] <= 1) color = "rgb(225, 22, 22)"
@@ -18,8 +29,11 @@ import API from "./API.js"
         }
         list.push(res)
       }
+      totalDeaths += data["3/11/20"]
     })
     console.log("main.js -> 23: list", list)
+    $('#morts').text(totalDeaths)
+    
     am4core.ready(function () {
 
       // Themes begin
