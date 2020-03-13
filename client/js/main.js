@@ -52,7 +52,7 @@ import API from "./API.js"
 
       // Set projection
       chart.projection = new am4maps.projections.Miller();
-
+      chart.chartContainer.wheelable = false;
       // Create map polygon series
       var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
 
