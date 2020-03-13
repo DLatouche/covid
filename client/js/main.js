@@ -1,15 +1,20 @@
 import API from "./API.js"
 (async () => {
-
+  const darkRed = "#7f0000"
+  const red = "#d32f2f"
+  const lightRed = "#f44336"
+  const whiteRed = "#e57373"
   try {
     let jsonFile = await API.getJson("deaths")
     let list = []
     jsonFile.forEach(data => {
       if (data["3/11/20"] >= 1) {
-        let color = "rgb(75, 22, 22)"
-        if (data["3/11/20"] <= 1) color = "rgb(225, 22, 22)"
-        else if (data["3/11/20"] < 5) color = "rgb(175, 22, 22)"
-        else if (data["3/11/20"] < 10) color = "rgb(125, 22, 22)"
+
+        let color = ""
+        if (data["3/11/20"] <= 1) color = whiteRed
+        else if (data["3/11/20"] < 5) color = lightRed
+        else if (data["3/11/20"] < 10) color = red
+        else color = darkRed
         let res = {
           "title": data["Country/Region"],
           "latitude": data["Lat"],
@@ -51,7 +56,7 @@ import API from "./API.js"
 
       // Create hover state and set alternative fill color
       var hs = polygonTemplate.states.create("hover");
-      hs.properties.fill = chart.colors.getIndex(0);
+      hs.properties.fill = darkReds;
 
       // Add image series
       var imageSeries = chart.series.push(new am4maps.MapImageSeries());
