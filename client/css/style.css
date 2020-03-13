@@ -588,7 +588,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #facts .counters span {
-  font-size: 48px;
+  font-size: 72px;
   display: block;
   color: rgb(188, 22, 22);
 }
@@ -597,7 +597,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding: 0;
   margin: 0 0 20px 0;
   font-family: "Poppins", sans-serif;
-  font-size: 14px;
+  font-size: 24px;
 }
 
 /* Services Section
