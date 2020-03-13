@@ -70,7 +70,7 @@ import API from "./API.js"
 
       // Create hover state and set alternative fill color
       var hs = polygonTemplate.states.create("hover");
-      hs.properties.fill = darkReds;
+      hs.properties.fill = darkRed;
 
       // Add image series
       var imageSeries = chart.series.push(new am4maps.MapImageSeries());
