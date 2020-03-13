@@ -28,7 +28,7 @@ import mapZone from './mapZone.js'
         else if (data["3/11/20"] < 10) color = red
         else color = darkRed
         let res = {
-          "title": data["Country/Region"],
+          "title": data["Province/State"] = undefined ? data["Country/Region"] : data["Province/State"],
           "latitude": data["Lat"],
           "longitude": data["Long"],
           "color": color
