@@ -629,6 +629,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding: 80px 0;
 }
 
+#call-to-action .illustration {
+  min-height: 200px;
+  background: url(../img/ill-lady.png) center bottom no-repeat;
+  background-size: contain;
+}
+
 #call-to-action .cta-title {
   color: #fff;
   font-size: 28px;
@@ -650,12 +656,13 @@ body.mobile-nav-active #mobile-nav-toggle {
   border-radius: 50px;
   transition: 0.5s;
   margin: 10px;
+  background: rgb(188, 22, 22);
   border: 2px solid #fff;
   color: #fff;
 }
 
 #call-to-action .cta-btn:hover {
-  background: rgb(188, 22, 22);
+  background: #111;
   border: 2px solid rgb(188, 22, 22);
 }
 
