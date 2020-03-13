@@ -1,5 +1,18 @@
 jQuery(document).ready(function ($) {
 
+  let totalConfirmed = 0;
+  let totalDeaths = 0;
+
+  fetch("http://localhost:3000/data/deaths").then(data => {
+    data.json().then(res => {
+      res.forEach(d => {
+        totalDeaths += d["3/11/20"];
+      })
+      console.log("Morts: "+totalDeaths)
+      $('#morts').text(totalDeaths.toLocaleString())
+    }).catch(e => console.log("%cmain.js -> 12 ERROR: e", 'background: #FF0000; color:#FFFFFF', e))
+  })
+
   fetch("http://localhost:3000/data/confirmed").then(data => {
     console.log("main.js -> 4: data", data)
     data.json().then(res => {
@@ -18,9 +31,11 @@ jQuery(document).ready(function ($) {
             "color": color
           }
           list.push(res)
-        
+          totalConfirmed += d["3/11/20"];
         }
       })
+      console.log("confirmed: "+totalConfirmed);
+      $('#confirmes').text(totalConfirmed.toLocaleString())
 
       am4core.ready(function () {
 
