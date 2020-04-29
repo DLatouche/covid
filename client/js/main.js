@@ -10,34 +10,29 @@ import mapZone from './mapZone.js'
     let totalConfirmed = 0;
     let totalDeaths = 0;
 
-    let jsonFileConfirmed = await API.getJson("confirmed")
-    jsonFileConfirmed.forEach(data => {
-      totalConfirmed += data["3/11/20"]
-    })
-    console.log("confirmed: " + totalConfirmed);
-    $('#confirmes').text(totalConfirmed)
-
-    let jsonFileDeaths = await API.getJson("deaths")
+    let dataCountries = await API.get("countries")
+    console.log("main.js -> 21: dataCountries", dataCountries)
     let list = []
-    jsonFileDeaths.forEach(data => {
-      if (data["3/11/20"] >= 1) {
-
+    dataCountries.data.forEach(data => {
+      if (data.coordinates.latitude != 0 && data.coordinates.longitude != 0) {
+        let nbDeaths = data.latest_data.deaths
         let color = ""
-        if (data["3/11/20"] <= 1) color = whiteRed
-        else if (data["3/11/20"] < 5) color = lightRed
-        else if (data["3/11/20"] < 10) color = red
+        if (nbDeaths <= 1) color = whiteRed
+        else if (nbDeaths < 5) color = lightRed
+        else if (nbDeaths < 10) color = red
         else color = darkRed
         let res = {
-          "title": data["Province/State"] = undefined ? data["Country/Region"] : data["Province/State"],
-          "latitude": data["Lat"],
-          "longitude": data["Long"],
-          "color": color
+          title: data.name,
+          latitude: data.coordinates.latitude,
+          longitude: data.coordinates.longitude,
+          color: color
         }
+        totalConfirmed += data.latest_data.confirmed
+        totalDeaths += nbDeaths
         list.push(res)
       }
-      totalDeaths += data["3/11/20"]
     })
-    console.log("main.js -> 23: list", list)
+    $('#confirmes').text(totalConfirmed)
     $('#morts').text(totalDeaths)
     mapZone(list)
 
