@@ -525,6 +525,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin-bottom: 10px;
 }
 
+#about .about-container .news4 {
+  min-height: 300px;
+  background: url(../img/news4.jpg) center top no-repeat;
+  margin-bottom: 10px;
+}
+
 #about .about-container .content {
   background: #fff;
 }
