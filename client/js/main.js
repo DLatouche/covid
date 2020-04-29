@@ -1,5 +1,7 @@
 import API from "./API.js"
 import mapZone from './mapZone.js'
+import line from './line.js'
+
 (async () => {
   const darkRed = "#7f0000"
   const red = "#d32f2f"
@@ -11,7 +13,6 @@ import mapZone from './mapZone.js'
     let totalDeaths = 0;
 
     let dataCountries = await API.get("countries")
-    console.log("main.js -> 21: dataCountries", dataCountries)
     let list = []
     dataCountries.data.forEach(data => {
       if (data.coordinates.latitude != 0 && data.coordinates.longitude != 0) {
@@ -35,6 +36,16 @@ import mapZone from './mapZone.js'
     $('#confirmes').text(totalConfirmed)
     $('#morts').text(totalDeaths)
     mapZone(list)
+
+    let dataTimeline = await API.get("timeline")
+    console.log("main.js -> 41: dataTimeline", dataTimeline)
+
+    let listLine = []
+    dataTimeline.data.forEach((data, i) => {
+      listLine.push({ date: new Date(data.date), value: data.deaths,  lineColor: red })
+    })
+
+    line(listLine)
 
 
   } catch (e) {
